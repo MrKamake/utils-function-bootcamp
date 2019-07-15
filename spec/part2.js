@@ -417,70 +417,6 @@
       });
     });
 
-    describe('memoize', function() {
-      var add, memoAdd;
-
-      beforeEach(function() {
-        add = function(a, b) {
-          return a + b;
-        };
-
-        memoAdd = _.memoize(add);
-      });
-
-      checkForNativeMethods(function() {
-        _.memoize(function add(a, b) {
-          return a + b;
-        });
-      });
-
-      it('should produce the same result as the non-memoized version', function() {
-        expect(add(1, 2)).to.equal(3);
-        expect(memoAdd(1, 2)).to.equal(3);
-      });
-
-      it('should give different results for different arguments', function() {
-        expect(memoAdd(1, 2)).to.equal(3);
-        expect(memoAdd(3, 4)).to.equal(7);
-        expect(memoAdd(1, 3)).to.equal(4);
-      });
-
-      it('should not run the memoized function twice when given a primitive type as an argument', function() {
-        // Here, we wrap a dummy function in a spy. A spy is a wrapper function (much like _.memoize
-        // or _.once) that keeps track of interesting information about the function it's spying on;
-        // e.g. whether or not the function has been called.
-        var spy = sinon.spy(function() { return 'Dummy output'; });
-        var memoSpy = _.memoize(spy);
-
-        memoSpy(10);
-        expect(spy).to.have.been.calledOnce;
-        memoSpy(10);
-        expect(spy).to.have.been.calledOnce;
-      });
-
-      it('should not run the memoized function twice when given a reference type as an argument', function() {
-        // Be careful how you are checking if a set of arguments has been passed in already
-        var spy = sinon.spy(function() { return 'Dummy output'; });
-        var memoSpy = _.memoize(spy);
-
-        memoSpy([1, 2, 3]);
-        expect(spy).to.have.been.calledOnce;
-        memoSpy([1, 2, 3]);
-        expect(spy).to.have.been.calledOnce;
-      });
-
-      it('should run the memoized function twice when given an array and then given a list of arguments', function() {
-        // Be careful how you are checking if a set of arguments has been passed in already
-        var spy = sinon.spy(function() { return 'Dummy output'; });
-        var memoSpy = _.memoize(spy);
-
-        memoSpy([1, 2, 3]);
-        expect(spy).to.have.been.calledOnce;
-        memoSpy(1, 2, 3);
-        expect(spy).to.have.been.calledTwice;
-      });
-    });
-
     describe('delay', function() {
       var callback;
 
@@ -509,36 +445,6 @@
 
         expect(callback).to.have.been.calledWith(1, 2);
       });
-    });
-
-    describe('shuffle', function() {
-      checkForNativeMethods(function() {
-        _.shuffle([1, 2, 3, 4]);
-      });
-
-      it('should not modify the original object', function() {
-        var numbers = [4, 5, 6];
-        var shuffled = _.shuffle(numbers).sort();
-
-        expect(shuffled).to.not.equal(numbers);
-        expect(numbers).to.eql([4, 5, 6]);
-      });
-
-      it('should have the same elements as the original object', function() {
-        var numbers = [4, 5, 6];
-        var shuffled = _.shuffle(numbers).sort();
-
-        expect(shuffled).to.eql([4, 5, 6]);
-      });
-
-      it('should not be in the same order as the original object', function() {
-        var numbers = [4, 5, 6, 7, 8, 9, 10];
-        var shuffled = _.shuffle(numbers);
-
-        // This test will fail 1/9! times
-        expect(shuffled).to.not.eql([4, 5, 6, 7, 8, 9, 10]);
-      });
-
     });
 
   });
